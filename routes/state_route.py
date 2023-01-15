@@ -3,7 +3,6 @@ from helpers.json_response import json_response
 from flask_restx import Resource, Namespace, fields
 from controllers.state_controller import StateController
 
-
 state_bp = Namespace(
     'States', description='Create and list states', path='/')
 state_controller = StateController()

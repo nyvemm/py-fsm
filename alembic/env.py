@@ -1,9 +1,12 @@
+from models.db import db
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+from seeders.seed import seed
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -18,7 +21,6 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from models.db import db
 target_metadata = db.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -71,6 +73,7 @@ def run_migrations_online() -> None:
 
         with context.begin_transaction():
             context.run_migrations()
+            seed(engine=connection)
 
 
 if context.is_offline_mode():
