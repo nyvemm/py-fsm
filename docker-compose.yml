@@ -20,7 +20,7 @@
     migrations:
       container_name: pyfsm-migrations
       build: .
-      command: poetry run python run-alembic.py
+      command: poetry run python scripts/run-alembic.py
       env_file:
         - .env
       depends_on:
