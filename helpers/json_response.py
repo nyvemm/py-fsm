@@ -7,8 +7,8 @@ def json_response(func):
     def wrapper(*args, **kwargs):
         try:
             result = func(*args, **kwargs)
-            return jsonify(result)
+            return result
         except Exception as e:
             db.session.rollback()
-            return jsonify({'message': str(e)}), 500
+            return {'message': str(e)}, 500
     return wrapper

@@ -14,4 +14,4 @@ class StateController:
 
     def get_states(self):
         states = State.query.all()
-        return {'states': [{**state.as_dict(), 'transitions': [transition.as_dict() for transition in state.transitions]} for state in states]}
+        return {state.name: {**state.as_dict('name'), 'transitions': {transition.name: transition.as_dict('name', 'from_state') for transition in state.transitions}} for state in states}

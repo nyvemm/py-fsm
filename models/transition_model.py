@@ -12,11 +12,12 @@ class Transition(db.Model):
     to_state = Column(String(255), ForeignKey('states.name'))
     to_state_name = db.relationship("State", foreign_keys=[to_state])
 
-    def as_dict(self):
+    def as_dict(self, *args):
         transition_dict = {}
         for c in self.__table__.columns:
-            try:
-                transition_dict[c.name] = getattr(self, c.name).isoformat()
-            except AttributeError:
-                transition_dict[c.name] = getattr(self, c.name)
+            if c.name not in args:
+                try:
+                    transition_dict[c.name] = getattr(self, c.name).isoformat()
+                except AttributeError:
+                    transition_dict[c.name] = getattr(self, c.name)
         return transition_dict

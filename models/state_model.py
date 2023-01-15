@@ -10,11 +10,12 @@ class State(db.Model):
     transitions = db.relationship(
         "Transition", back_populates="from_state_name", foreign_keys="Transition.from_state")
 
-    def as_dict(self):
+    def as_dict(self, *args):
         state_dict = {}
         for c in self.__table__.columns:
-            try:
-                state_dict[c.name] = getattr(self, c.name).isoformat()
-            except AttributeError:
-                state_dict[c.name] = getattr(self, c.name)
+            if c.name not in args:
+                try:
+                    state_dict[c.name] = getattr(self, c.name).isoformat()
+                except AttributeError:
+                    state_dict[c.name] = getattr(self, c.name)
         return state_dict

@@ -27,4 +27,4 @@ class TransitionController:
 
     def get_transitions(self):
         transitions = Transition.query.all()
-        return {'transitions': [t.as_dict() for t in transitions]}
+        return {t.name: t.as_dict() for t in transitions}
