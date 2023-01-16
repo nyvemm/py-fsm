@@ -8,14 +8,15 @@ def seed_states(engine):
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    if session.query(State).count() == 0:
-        states = [
-            State(name='acordado'),
-            State(name='trabalhando'),
-            State(name='descansando'),
-            State(name='dormindo')
-        ]
-        session.add_all(states)
-        session.commit()
-    else:
-        print("States table is not empty. Skipping seeding.")
+    if engine.dialect.has_table(engine, 'states'):
+        if session.query(State).count() == 0:
+            states = [
+                State(name='acordado'),
+                State(name='trabalhando'),
+                State(name='descansando'),
+                State(name='dormindo')
+            ]
+            session.add_all(states)
+            session.commit()
+        else:
+            print("States table is not empty. Skipping seeding.")
