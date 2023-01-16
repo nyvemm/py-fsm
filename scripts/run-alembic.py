@@ -1,6 +1,6 @@
 import os
-from alembic.config import Config
 from alembic import command
+from alembic.config import Config
 from dotenv import load_dotenv
 
 load_dotenv()

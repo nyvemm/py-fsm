@@ -1,7 +1,7 @@
 from flask import jsonify
 from functools import wraps
-from models.db import db
 from helpers.logger import logger
+from models.db import db
 
 def json_response(func):
     @wraps(func)

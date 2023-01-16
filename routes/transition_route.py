@@ -1,12 +1,12 @@
+from controllers.transition_controller import TransitionController
 from flask import request
 from flask_restx import Resource, Namespace, fields
 from helpers.json_response import json_response
-from controllers.transition_controller import TransitionController
+from models.cache import cache
 
 transition_bp = Namespace(
     'Transitions', description='Create and list transitions', path='/')
 transition_controller = TransitionController()
-
 
 @transition_bp.route('/transitions')
 class Transitions(Resource):
@@ -27,6 +27,7 @@ class Transitions(Resource):
         return transition_controller.add_transition(transition_name, from_state, to_state)
 
     @json_response
+    @cache.cached(timeout=60)
     def get(self):
         """ Get all transitions """
         return transition_controller.get_transitions()
@@ -35,6 +36,7 @@ class Transitions(Resource):
 @transition_bp.route('/next/<current_transition>')
 class NextTransition(Resource):
     @json_response
+    @cache.cached(timeout=60)
     def get(self, current_transition):
         """ Get the next transition associated with the current transition """
         return transition_controller.get_next_transition(current_transition)
