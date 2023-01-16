@@ -1,6 +1,9 @@
+import random
+
 from models.db import db
 from models.state_model import State
 from models.transition_model import Transition
+from helpers.logger import logger
 
 
 class TransitionController:
@@ -28,3 +31,30 @@ class TransitionController:
     def get_transitions(self):
         transitions = Transition.query.all()
         return {t.name: t.as_dict() for t in transitions}
+
+    def decide_next_transition(self, current_transition, possible_next_transitions):
+        valid_transitions = [
+            transition for transition in possible_next_transitions if transition.created_at > current_transition.created_at]
+
+        logger.debug('Possible next transitions: {}'.format(
+            possible_next_transitions))
+        return valid_transitions[0] if valid_transitions else possible_next_transitions[0]
+
+    def get_next_transition(self, current_transition):
+        current_transition = Transition.query.filter_by(
+            name=current_transition).first()
+        if not current_transition:
+            raise ValueError('Current transition does not exist')
+
+        possible_next_transitions = Transition.query.filter_by(
+            from_state=current_transition.to_state).all()
+        if not possible_next_transitions:
+            raise ValueError('There is no next transition')
+        
+        if len(possible_next_transitions) == 1:
+            return possible_next_transitions[0].as_dict()
+        
+        else:
+            next_transition = self.decide_next_transition(
+                current_transition, possible_next_transitions)
+            return next_transition.as_dict()

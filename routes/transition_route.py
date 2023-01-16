@@ -30,3 +30,11 @@ class Transitions(Resource):
     def get(self):
         """ Get all transitions """
         return transition_controller.get_transitions()
+
+
+@transition_bp.route('/next/<current_transition>')
+class NextTransition(Resource):
+    @json_response
+    def get(self, current_transition):
+        """ Get the next transition associated with the current transition """
+        return transition_controller.get_next_transition(current_transition)

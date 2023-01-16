@@ -26,3 +26,10 @@ class States(Resource):
     def get(self):
         """ Get all states """
         return state_controller.get_states()
+
+@state_bp.route('/states/<string:state_name>')
+class States(Resource):
+    @json_response
+    def get(self, state_name):
+        """ Get all transitions from a specific state """
+        return state_controller.get_transitions_from_state(state_name)

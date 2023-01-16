@@ -1,7 +1,7 @@
 from flask import Flask
 from models.db import db
-from scripts.config import Config
 from flask_restx import Api
+from scripts.config import Config
 
 
 def create_app(config_class=Config):
